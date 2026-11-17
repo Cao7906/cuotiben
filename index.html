@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4f6bed">
+<meta name="description" content="初中生错题本：拍照录入、AI 解析、举一反三、复习统计">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="错题本">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-64.png" type="image/png">
+<title>初中生错题本</title>
+<link rel="stylesheet" href="styles.css?v=6">
+</head>
+<body>
+
+<!-- 图标精灵 -->
+<svg class="svg-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.7l1.2-2h6.2l1.2 2h1.7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.38a1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.63 15a1.7 1.7 0 0 0-1.56-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.62 9a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.63a1.7 1.7 0 0 0 1-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.37 9v.09a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1z"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/><path d="M19 16.5 19.7 19l2.3.8-2.3.7L19 23l-.7-2.5-2.3-.7 2.3-.8z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 3h4M6 7l1 13h10l1-13M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12m-5-5 5 5 5-5M4 18v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 17 5-4 4 3 3-2 4 3"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 6M20 5v6h-6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5M3 17l9 5 9-5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+</svg>
+
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">错</span>
+      <div class="brand-text">
+        <h1>初中生错题本</h1>
+        <p>把每一道错题，变成一次进步</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button id="installBtn" class="install-btn" hidden><svg class="icon"><use href="#i-download"/></svg><span>装到桌面</span></button>
+      <button id="goSettings" class="icon-btn" aria-label="设置"><svg class="icon"><use href="#i-settings"/></svg></button>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- 错题本 -->
+    <section id="view-list" class="view active">
+      <div class="search-row">
+        <svg class="icon"><use href="#i-search"/></svg>
+        <input id="searchInput" type="search" placeholder="搜索题干、知识点、答案…" autocomplete="off">
+      </div>
+      <div class="filter-chips" id="subjectChips"></div>
+      <div class="list-toolbar">
+        <div class="segmented" id="statusFilter">
+          <button data-status="all" class="on">全部</button>
+          <button data-status="todo">未掌握</button>
+          <button data-status="done">已掌握</button>
+        </div>
+        <select id="sortSelect" class="mini-select" aria-label="排序">
+          <option value="new">最新录入</option>
+          <option value="old">最早录入</option>
+          <option value="hard">难度优先</option>
+          <option value="review">待复习优先</option>
+        </select>
+      </div>
+      <p class="result-count" id="resultCount"></p>
+      <div id="cardGrid" class="card-grid"></div>
+      <div id="emptyState" class="empty-state" hidden>
+        <div class="empty-art"><svg class="icon"><use href="#i-book"/></svg></div>
+        <h3>还没有错题</h3>
+        <p>点右下角的加号，拍下第一道错题吧</p>
+        <button id="emptyAdd" class="primary-btn">添加错题</button>
+      </div>
+    </section>
+
+    <!-- 统计 -->
+    <section id="view-stats" class="view">
+      <div id="statsBody"></div>
+    </section>
+
+    <!-- 设置 -->
+    <section id="view-settings" class="view">
+      <div class="settings-card">
+        <h2><svg class="icon"><use href="#i-spark"/></svg> AI 识别设置</h2>
+        <p class="settings-lead">已接入智谱 AI 双模型：<b>glm-4v-flash</b> 拍照识别，<b>glm-4-flash</b> 生成解析与同类题。密钥只保存在服务端 <code>config.json</code>，不会出现在浏览器里。未启动本地服务时自动回退演示模式。</p>
+        <div class="field">
+          <label for="aiMode">运行模式</label>
+          <select id="aiMode">
+            <option value="auto">自动（优先本地代理）</option>
+            <option value="proxy">本地代理（推荐，需启动 server.js）</option>
+            <option value="direct">浏览器直连（需填 Key）</option>
+            <option value="demo">演示模式（无需联网）</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="provider">服务商预设</label>
+          <select id="provider">
+            <option value="zhipu">智谱 GLM（免费双模型）</option>
+            <option value="dashscope">阿里云百炼 / 通义千问</option>
+            <option value="moonshot">月之暗面 Kimi</option>
+            <option value="hunyuan">腾讯混元</option>
+            <option value="openai">OpenAI</option>
+            <option value="custom">自定义（OpenAI 兼容）</option>
+          </select>
+        </div>
+        <div class="field"><label for="baseUrl">接口地址 Base URL</label><input id="baseUrl" type="text" spellcheck="false" placeholder="https://.../v1"></div>
+        <div class="field"><label for="apiKey">API Key（直连模式用，仅存本机浏览器）</label><input id="apiKey" type="password" spellcheck="false" placeholder="sk-..." autocomplete="off"></div>
+        <div class="field"><label for="model">识别模型（看图识字 · 视觉模型）</label><input id="model" type="text" spellcheck="false" placeholder="glm-4v-flash"></div>
+        <div class="field"><label for="textModel">解析 / 出题模型（文本模型）</label><input id="textModel" type="text" spellcheck="false" placeholder="glm-4-flash"></div>
+        <p class="settings-note">智谱免费双模型：<code>glm-4v-flash</code> 逐张识别图片 → <code>glm-4-flash</code> 生成分步解析与举一反三。视觉模型单次只支持 1 张图，多张照片会自动逐张识别后合并。<br>带图片的请求会强制走视觉模型，图片按标准 <code>image_url</code> 结构发送（content 里的 type 只有 <code>text</code> / <code>image_url</code>），避免文本模型拒绝图片而报 1210。</p>
+        <div class="row-btns">
+          <button id="saveAiConfig" class="primary-btn">保存设置</button>
+          <button id="testAi" class="ghost-btn">测试连接</button>
+        </div>
+        <p class="settings-note" id="aiStatusLine">当前：检测中…</p>
+      </div>
+
+      <div class="settings-card">
+        <h2><svg class="icon"><use href="#i-layers"/></svg> 数据管理</h2>
+        <p class="settings-lead">所有错题保存在本机浏览器（IndexedDB），不会上传到任何服务器；建议定期导出备份。</p>
+        <div class="row-btns wrap">
+          <button id="exportBtn" class="ghost-btn"><svg class="icon"><use href="#i-download"/></svg> 导出备份</button>
+          <button id="importBtn" class="ghost-btn"><svg class="icon"><use href="#i-upload"/></svg> 导入备份</button>
+          <button id="demoBtn" class="ghost-btn"><svg class="icon"><use href="#i-spark"/></svg> 生成示例数据</button>
+          <button id="clearBtn" class="ghost-btn danger">清空全部</button>
+        </div>
+        <input id="importFile" type="file" accept="application/json,.json" hidden>
+        <p class="settings-note" id="storageLine"></p>
+      </div>
+
+      <div class="settings-card">
+        <h2><svg class="icon"><use href="#i-phone"/></svg> 添加到桌面</h2>
+        <p class="settings-lead">手机浏览器打开本页后：<b>Android / Chrome</b> 点击右上角菜单 →「添加到主屏幕 / 安装应用」；<b>iPhone / Safari</b> 点击分享 →「添加到主屏幕」。之后可全屏离线打开。</p>
+        <button id="installBtn2" class="ghost-btn" hidden><svg class="icon"><use href="#i-download"/></svg> 立即安装</button>
+        <p class="settings-note">支持离线查看已录入的错题；AI 识别与举一反三需要联网。</p>
+      </div>
+
+      <div class="settings-card about">
+        <h2><svg class="icon"><use href="#i-info"/></svg> 使用说明</h2>
+        <p class="settings-lead">纯静态网页应用，零第三方依赖，数据只存在本机浏览器。<br>版本 1.0 · 适用初中各学科</p>
+        <p class="settings-note"><b>启动：</b>双击 start.bat（Windows）或运行 <code>node server.js</code>，浏览器打开 http://localhost:5173 。直接双击 index.html 也能用，但无法安装到桌面。</p>
+        <p class="settings-note"><b>AI 配置：</b>已生成 config.json（智谱免费双模型）。更换密钥或模型请编辑该文件后重启服务；也可在本页选「浏览器直连」自行填写。自检命令：<code>node tools/check_zhipu.js</code>。</p>
+        <p class="settings-note"><b>手机使用：</b>让手机与电脑处于同一 Wi-Fi，用手机浏览器访问 http://电脑局域网IP:5173 ，再「添加到主屏幕」。</p>
+      </div>
+    </section>
+  </main>
+
+  <button id="fabAdd" class="fab" aria-label="添加错题"><svg class="icon"><use href="#i-plus"/></svg></button>
+
+  <nav class="tabbar" aria-label="主导航">
+    <button data-tab="list" class="on"><svg class="icon"><use href="#i-book"/></svg><span>错题本</span></button>
+    <button data-tab="stats"><svg class="icon"><use href="#i-chart"/></svg><span>复习统计</span></button>
+    <button data-tab="settings"><svg class="icon"><use href="#i-settings"/></svg><span>设置</span></button>
+  </nav>
+</div>
+
+<!-- 录入 / 编辑 -->
+<div id="editorModal" class="modal" hidden>
+  <div class="modal-sheet">
+    <header class="modal-head">
+      <button class="icon-btn" data-close="editorModal" aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button>
+      <h2 id="editorTitle">添加错题</h2>
+      <button id="editorSave" class="primary-btn small" hidden>保存</button>
+    </header>
+    <div class="modal-body">
+      <section id="captureStep">
+        <div class="tip-box"><svg class="icon"><use href="#i-info"/></svg><span>拍下题目和你的解答，AI 会自动识别文字、给出答案与解析、标注知识点和难度。</span></div>
+        <div id="dropZone" class="dropzone" role="button" tabindex="0">
+          <div class="dz-icon"><svg class="icon"><use href="#i-camera"/></svg></div>
+          <strong>点击选择图片 / 拖入图片</strong>
+          <small>可多选，最多 4 张（题目、草稿、批改）</small>
+        </div>
+        <div class="row-btns dz-source">
+          <button id="btnCamera" class="ghost-btn"><svg class="icon"><use href="#i-camera"/></svg> 直接拍照</button>
+          <button id="btnAlbum" class="ghost-btn"><svg class="icon"><use href="#i-image"/></svg> 相册多选</button>
+        </div>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+        <div id="previewStrip" class="preview-strip"></div>
+        <div class="field">
+          <label for="captureSubject">学科（可选，帮助识别更准）</label>
+          <select id="captureSubject"></select>
+        </div>
+        <div class="row-btns">
+          <button id="btnRecognize" class="primary-btn"><svg class="icon"><use href="#i-spark"/></svg> AI 识别并解析</button>
+          <button id="btnManual" class="ghost-btn">手动录入</button>
+        </div>
+        <p class="settings-note" id="captureNote"></p>
+      </section>
+
+      <section id="formStep" hidden>
+        <div id="formImages" class="preview-strip"></div>
+        <form id="mistakeForm" autocomplete="off">
+          <div class="field"><label for="fQuestion">题目 <em>*</em></label><textarea id="fQuestion" rows="4" placeholder="题干内容…"></textarea></div>
+          <div class="field two-col">
+            <div><label for="fSubject">学科</label><select id="fSubject"></select></div>
+            <div><label for="fDifficulty">难度</label><select id="fDifficulty"></select></div>
+          </div>
+          <div class="field two-col">
+            <div><label for="fMyAnswer">我的答案（错答）</label><input id="fMyAnswer" type="text" placeholder="当时写错的答案"></div>
+            <div><label for="fAnswer">正确答案</label><input id="fAnswer" type="text" placeholder="标准答案"></div>
+          </div>
+          <div class="field"><label for="fAnalysis">解析</label><textarea id="fAnalysis" rows="4" placeholder="解题思路、关键步骤、易错提醒…"></textarea></div>
+          <div class="field"><label for="fKnowledge">知识点（用逗号分隔）</label><input id="fKnowledge" type="text" placeholder="如：一元二次方程, 判别式"></div>
+          <div class="field"><label for="fCause">错因</label><select id="fCause"></select></div>
+          <div class="field"><label for="fNote">备注 / 复盘（可选）</label><textarea id="fNote" rows="2" placeholder="下次要注意什么…"></textarea></div>
+          <div class="field checkbox-field">
+            <label><input id="fMastered" type="checkbox"> 这道题已经掌握了</label>
+          </div>
+        </form>
+        <div class="row-btns">
+          <button id="btnBackCapture" class="ghost-btn">返回图片</button>
+          <button id="btnReRecognize" class="ghost-btn"><svg class="icon"><use href="#i-refresh"/></svg> 重新识别</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- 详情 -->
+<div id="detailModal" class="modal" hidden>
+  <div class="modal-sheet">
+    <header class="modal-head">
+      <button class="icon-btn" data-close="detailModal" aria-label="关闭"><svg class="icon"><use href="#i-close"/></svg></button>
+      <h2>错题详情</h2>
+      <button id="detailEdit" class="icon-btn" aria-label="编辑"><svg class="icon"><use href="#i-edit"/></svg></button>
+    </header>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+
+<div id="loading" class="loading-overlay" hidden>
+  <div class="loading-card">
+    <div class="spinner"></div>
+    <p id="loadingText">AI 正在识别题目…</p>
+    <small>首次使用可能需要几秒</small>
+  </div>
+</div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+// 新版 Service Worker 替换旧版时自动刷新一次，避免旧缓存的 ai.js 用旧格式 / 旧提示词
+// （首次安装不刷新，避免不必要的重载）
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  var hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (!hadController) return;
+    try {
+      if (sessionStorage.getItem('ctb_sw_v6')) return;
+      sessionStorage.setItem('ctb_sw_v6', '1');
+    } catch (e) { return; }
+    location.reload();
+  });
+}
+</script>
+<script src="db.js?v=6"></script>
+<script src="ai.js?v=6"></script>
+<script src="app.js?v=6"></script>
+</body>
+</html>
